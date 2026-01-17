@@ -1,1 +1,1 @@
-Link: https://qwertupoiy.github.io/Portfolio
+Link: https://qwertupoiy.github.io/portfolio
