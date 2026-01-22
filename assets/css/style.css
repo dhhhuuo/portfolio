@@ -17,10 +17,20 @@ body {
 }
 
 /* ------------------------------
+   공통 컨테이너(페이지 폭/여백 통일)
+------------------------------ */
+:root {
+  --page-max: 1480px;
+  --page-pad-x: 26px;
+  --page-pad-x-m: 20px;
+  --sidebar-w: 250px;
+}
+
+/* ------------------------------
    사이드바
 ------------------------------ */
 .sidebar {
-  width: 250px;
+  width: var(--sidebar-w);
   background: #fff;
   border-right: 1px solid #e5e7eb;
   position: fixed;
@@ -117,20 +127,26 @@ body {
 }
 
 /* ------------------------------
-   메인
+   본문 컨테이너
 ------------------------------ */
 .content {
-  margin-left: 250px;
+  margin-left: var(--sidebar-w);
   flex: 1;
-  padding: 38px 40px 60px;
+  padding: 38px var(--page-pad-x) 60px;
 }
 
 .main-wrapper {
-  max-width: 1150px;
-  margin: 0 auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+/* main-wrapper는 이제 폭을 잡지 않고 “세로 흐름”만 담당 */
+.content > .main-wrapper,
+.content > .proj-page {
+  max-width: var(--page-max);
+  margin: 0 auto;
 }
 
 .card {
@@ -398,234 +414,279 @@ body {
 /* ------------------------------
    모바일
 ------------------------------ */
-.mobile-header {
-  display: none;
-}
+.mobile-header { display: none; }
+.mobile-sidebar-toggle { display: none; }
 
 @media (max-width: 1024px) {
-  .content {
-    margin-left: 0;
-    padding: 20px;
+  .mobile-header{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 14px 16px;
+    padding-left: 68px;
+    padding-rignt: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    width: 100vw !important;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  }
+
+  .mobile-sidebar-toggle {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.12);
+    background: rgba(255,255,255,0.85);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    backdrop-filter: blur(6px);
+    color: #111;
+    z-index: 10003;
+    cursor: pointer;
+    transition: left 0.2s ease;
+  }
+
+  /* ✅ 다크모드 */
+  html.dark .mobile-sidebar-toggle{
+    background: rgba(20,20,20,0.6);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.45);
+  }
+
+  /* ✅ 열리면 버튼만 옆으로(사이드바 밖으로) */
+  body.menu-open .mobile-sidebar-toggle {
+    left: 262px;
   }
 
   .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 250px;                /* 필요 시 조정 */
     transform: translateX(-100%);
     transition: transform 0.2s ease-out;
+    z-index: 10002;              /* overlay보다 위 */
   }
 
-  .sidebar.active {
-    transform: translateX(0);
+  /* ✅ 사이드바 “열림”은 transform으로만 */
+  .sidebar.active,
+  #sidebar.active .sidebar {
+    transform: translateX(0) !important;
   }
 
-  .mobile-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
+  .sidebar-overlay{
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 10001;
+  }
+  .sidebar-overlay.active{
+    pointer-events: auto;
+    opacity: 1;
   }
 
-  /* 모바일에서는 세로 레이아웃 */
-  .middle-grid {
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .middle-grid .col-left,
-  .middle-grid .col-right {
-    flex: 1;
-  }
-
-  /* 모바일에서는 아래 카드 늘리지 말고 본문만큼 */
-  .middle-grid .col > .card:last-child {
-    flex: 0;
-  }
+  body.no-scroll { overflow: hidden; }
 }
 
-/* ------------------------------
-   다크 모드
------------------------------- */
+/* ==============================
+   DARK MODE (Global) - SOFT GRAY
+   - style.css 맨 아래
+============================== */
 
+html.dark {
+  --dark-bg: #121212;
+  --dark-sidebar: #171717;
+  --dark-surface: #1e1e1e;
+  --dark-surface-2: #242424;
+  --dark-border: #2f2f2f;
+
+  --dark-text: #e6e6e6;
+  --dark-title: #f4f4f5;
+  --dark-muted: #a8a8a8;
+  --on-light: #111827;
+
+  color-scheme: dark;
+}
+
+/* 페이지 기본 배경/글자 */
 html.dark body {
-  background: #020617;  /* 아주 진한 네이비 계열 */
-  color: #e5e7eb;       /* 기본 텍스트 색 */
+  background: var(--dark-bg);
+  color: var(--dark-text);
 }
 
 /* 사이드바 */
 html.dark .sidebar {
-  background: #020617;
-  border-right: 1px solid #1f2937;
-  color: #e5e7eb;
+  background: var(--dark-bg);
+  border-right: 1px solid var(--dark-border);
+  color: var(--dark-text);
 }
 
-html.dark .sidebar-title {
-  color: #f9fafb;
-}
+html.dark .sidebar-title { color: var(--dark-title); }
 
-html.dark .sidebar-menu a {
-  color: #e5e7eb;
-}
+html.dark .sidebar-menu a { color: var(--dark-text); }
+html.dark .sidebar-menu a:hover { background: var(--dark-surface); }
 
-html.dark .sidebar-menu a:hover {
-  background: #111827;
-}
-
-html.dark .sidebar-label {
-  color: #6b7280;
-}
-
+html.dark .sidebar-label,
+html.dark .sidebar-project-date,
+html.dark .sidebar-project-desc,
 html.dark .sidebar-footer {
-  color: #9ca3af;
+  color: var(--dark-muted);
 }
 
 html.dark .theme-toggle {
-  background: #020617;
-  color: #e5e7eb;
-  border-color: #4b5563;
+  background: transparent;
+  border: 1px solid var(--dark-border);
+  color: var(--dark-text);
 }
 
 /* 카드 공통 */
 html.dark .card {
-  background: #020617;
-  border: 1px solid #111827;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
-  color: #e5e7eb;   /* 카드 안 텍스트 기본 색 */
+  background: var(--dark-surface);
+  border: 1px solid var(--dark-border);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+  color: var(--dark-text);
 }
 
-/* 섹션 제목 / 메인 제목 */
+/* 타이틀 */
 html.dark .section-title,
-html.dark .profile-left h1,
-html.dark .proj-honestpick .proj-section h2,
-html.dark .proj-summarix .proj-section h2 {
-  color: #f9fafb;
+html.dark .profile-left h1 {
+  color: var(--dark-title);
 }
 
-/* 메인 프로필 텍스트 */
-html.dark .profile-left p {
-  color: #e5e7eb;
-}
+/* 본문/보조 */
+html.dark .profile-left p { color: var(--dark-text); }
 
-/* ------------------------------
-   Projects / Certificates / Skills
------------------------------- */
-
-/* 프로젝트 카드 배경 + 텍스트 */
-html.dark .project-links a {
-  background: #020617;
-  color: #e5e7eb;
-}
-
-/* 프로젝트 이름 (HonestPick / Summarix) */
-html.dark .project-title {
-  color: #f9fafb;
-}
-
-/* 서브 텍스트 색 */
 html.dark .project-meta,
 html.dark .project-date,
 html.dark .cert-meta,
-html.dark .skills-note,
-html.dark .caption,
-html.dark .proj-meta {
-  color: #9ca3af;
+html.dark .skills-note {
+  color: var(--dark-muted);
 }
 
-/* 자격증 카드 배경 + 이름 */
-html.dark .cert-item {
-  background: #020617;
+/* 프로젝트 링크 카드(인덱스) */
+html.dark .project-links a {
+  background: var(--dark-surface);
+  border: 1px solid var(--dark-border);
+  color: var(--dark-text);
 }
+html.dark .project-links a:hover { background: var(--dark-surface-2); }
 
-html.dark .cert-name {
-  color: #e5e7eb;
-}
-
-/* 스킬 카드 배경 */
-html.dark .skills-category,
-html.dark .screen-box,
-html.dark .proj-honestpick .arch-card,
-html.dark .proj-honestpick .screen-box.is-image,
-html.dark .proj-summarix .arch-card,
-html.dark .proj-summarix .screen-box.is-image {
-  background: #020617;
-}
-
-/* 스킬 아이콘 살짝 밝게 */
-html.dark .skills-card i[class^="devicon-"],
-html.dark .skills-card i[class*=" devicon-"],
-html.dark .contact-card i[class^="devicon-"],
-html.dark .contact-card i[class*=" devicon-"] {
-  filter: brightness(1.35);
-}
-
-/* 특히 GitHub 아이콘은 거의 검정이라 흰색으로 강제 */
-html.dark .devicon-github-original,
-html.dark .devicon-github-original-wordmark {
-  color: #f9fafb;
+/* 자격증/스킬 박스 */
+html.dark .cert-item,
+html.dark .skills-category {
+  background: var(--dark-surface);
+  border: 1px solid var(--dark-border);
+  color: var(--dark-text);
 }
 
 /* 스킬 버튼 */
 html.dark .skill-btn {
-  background: #020617;
-  border-color: #374151;
-  color: #e5e7eb;
+  background: var(--dark-surface);
+  border-color: var(--dark-border);
+  color: var(--dark-text);
 }
-
 html.dark .skill-btn:hover {
-  background: #111827;
-  border-color: #9ca3af;
+  background: var(--dark-surface-2);
+  border-color: var(--dark-muted);
 }
 
-/* 스택 배지 (주요 모듈) */
-html.dark .stack {
-  background: #020617;
-  border: 1px solid #374151;
-  color: #e5e7eb;
+/* Contact 링크 */
+html.dark .contact-card a { color: var(--dark-text); }
+
+/* 아이콘 밝기 */
+html.dark i[class^="devicon-"],
+html.dark i[class*=" devicon-"] {
+  filter: brightness(1.25);
 }
 
-/* 프로젝트 상세 기술 스택 라벨 (Language / Web / DB ...) */
-html.dark .proj-honestpick .proj-info li strong,
-html.dark .proj-summarix .proj-info li strong {
-  color: #e5e7eb;
+/*
+
+color 모드 변경 값
+dark-bg : 페이지 배경 (soft navy-gray)
+dark-surface : 카드/박스 배경
+dark-surface-2 : hover/칩
+dark-border : 테두리
+dark-text : 기본 글자
+dark-title : 제목
+dark-muted : 보조 텍스트
+on-light : 밝은(화이트 계열) 배경 위 글자
+
+
+네이비
+
+html.dark {
+  --dark-bg: #0f172a;
+  --dark-surface: #111827;
+  --dark-surface-2: #0b1220;
+  --dark-border: #243041;
+  --dark-text: #e5e7eb;
+  --dark-title: #f8fafc;
+  --dark-muted: #a3adc2;
+  --on-light: #111827;
+
+  color-scheme: dark;
 }
 
-/* Contact 영역 링크 */
-html.dark .contact-card a {
-  color: #e5e7eb;
+
+챠콜
+
+html.dark {
+  --dark-bg: #121212;
+  --dark-sidebar: #171717;
+  --dark-surface: #1e1e1e;
+  --dark-surface-2: #242424;
+  --dark-border: #2f2f2f;
+
+  --dark-text: #e6e6e6;
+  --dark-title: #f4f4f5;
+  --dark-muted: #a8a8a8;
+  --on-light: #111827;
+
+  color-scheme: dark;
 }
 
-/* ------------------------------
-   프로젝트 HERO 버튼 (GitHub 보기 등)
------------------------------- */
+조금 더 밝은 챠콜
 
-/* 메인/서브/깃허브 버튼 */
-html.dark .proj-honestpick .proj-hero-actions .btn-secondary,
-html.dark .proj-summarix .proj-hero-actions .btn-secondary {
-  background: transparent;
-  border: 1px solid #e5e7eb;
-  color: #e5e7eb;
+html.dark {
+  --dark-bg: #161616;
+  --dark-sidebar: #1c1c1c;
+  --dark-surface: #232323;
+  --dark-surface-2: #2a2a2a;
+  --dark-border: #383838;
+
+  --dark-text: #e9e9e9;
+  --dark-title: #ffffff;
+  --dark-muted: #b2b2b2;
+  --on-light: #111827;
+
+  color-scheme: dark;
 }
 
-html.dark .proj-honestpick .proj-hero-actions .btn-primary,
-html.dark .proj-summarix .proj-hero-actions .btn-primary {
-  background: #f9fafb;      /* 다크 모드에서는 밝은 버튼 */
-  color: #111827;
+
+더 진한 챠콜
+
+html.dark {
+  --dark-bg: #0f0f10;
+  --dark-sidebar: #141416;
+  --dark-surface: #19191b;
+  --dark-surface-2: #202023;
+  --dark-border: #2a2a2e;
+
+  --dark-text: #e5e7eb;
+  --dark-title: #fafafa;
+  --dark-muted: #9ca3af;
+  --on-light: #111827;
+
+  color-scheme: dark;
 }
 
-/* 시연 영상 / 발표자료는 원래 색 유지 + 살짝 테두리 */
-html.dark .proj-honestpick .proj-hero-actions .btn-demo,
-html.dark .proj-honestpick .proj-hero-actions .btn-ppt,
-html.dark .proj-summarix .proj-hero-actions .btn-demo,
-html.dark .proj-summarix .proj-hero-actions .btn-ppt {
-  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.6);
-}
-
-/* ------------------------------
-   모달
------------------------------- */
-
-html.dark .modal-content {
-  background: #020617;
-}
-
-html.dark .modal-caption {
-  color: #9ca3af;
-}
+*/

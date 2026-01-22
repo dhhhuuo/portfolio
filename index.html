@@ -3,55 +3,19 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>YooDohyun Portfolio</title>
+    <title>Yoo Dohyun Portfolio</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
     <link rel="stylesheet" href="assets/css/style.css?v=11" />
+    <link rel="stylesheet" href="assets/css/sidebar.css" />
 </head>
 <body>
 <!-- 사이드바 -->
-<nav class="sidebar">
-    <div class="sidebar-header">
-        <a href="index.html" class="sidebar-title">Portfolio</a>
-    </div>
-    <ul class="sidebar-menu">
-        <li class="sidebar-label">Projects</li>
-
-        <li>
-            <a href="pages/projects/summarix.html"
-               data-page="pages/projects/summarix.html"
-               class="sidebar-project">
-                <span class="sidebar-project-top">
-                  <span class="sidebar-project-name">Summarix</span>
-                  <span class="sidebar-project-date">25.09 ~ 25.10</span>
-                </span>
-                <span class="sidebar-project-desc">경제뉴스 요약 플랫폼</span>
-            </a>
-        </li>
-
-        <li>
-            <a href="pages/projects/honestpick.html"
-               data-page="pages/projects/honestpick.html"
-               class="sidebar-project">
-                <span class="sidebar-project-top">
-                  <span class="sidebar-project-name">HonestPick</span>
-                  <span class="sidebar-project-date">25.05 ~ 25.06</span>
-                </span>
-                <span class="sidebar-project-desc">음식점 예약/리뷰 플랫폼</span>
-            </a>
-        </li>
-
-    </ul>
-    <div class="sidebar-footer">
-        <button class="theme-toggle" title="테마">◑</button>
-        <p>© 2025 qwertupoiy</p>
-    </div>
-</nav>
+<div id="sidebar"></div>
 
 <!-- 메인 -->
 <main class="content">
     <!-- 모바일 헤더 -->
     <header class="mobile-header">
-        <button class="menu-btn">☰</button>
         <h2>Portfolio</h2>
     </header>
 
@@ -138,45 +102,78 @@
                     <h3 class="section-title">Skill Stack</h3>
                     <p class="skills-note">※ 굵게 표기된 기술은 주로 사용해 온 주력 스택입니다.</p>
 
+                    <!-- Languages -->
+                    <div class="skills-category">
+                        <h4>Languages</h4>
+                        <div class="skills-list">
+                            <span class="skill-btn"><i class="devicon-java-plain colored"></i><strong>Java</strong></span>
+                            <span class="skill-btn"><i class="devicon-python-plain colored"></i><strong>Python</strong></span>
+                            <span class="skill-btn"><i class="devicon-javascript-plain colored"></i>JavaScript</span>
+                        </div>
+                    </div>
+
+                    <!-- Backend -->
                     <div class="skills-category">
                         <h4>Backend</h4>
                         <div class="skills-list">
-                            <span class="skill-btn"><i class="devicon-java-plain colored"></i><strong>Java</strong></span>
                             <span class="skill-btn"><i class="devicon-spring-plain colored"></i><strong>Spring Boot</strong></span>
-                            <span class="skill-btn"><i class="devicon-nodejs-plain colored"></i><strong>REST API</strong></span>
+                            <span class="skill-btn"><strong>REST API</strong></span>
                             <span class="skill-btn"><i class="devicon-html5-plain colored"></i><strong>JSP / Servlet</strong></span>
                         </div>
                     </div>
 
+                    <!-- Database -->
                     <div class="skills-category">
                         <h4>Database</h4>
                         <div class="skills-list">
-                            <span class="skill-btn"><i class="devicon-mysql-plain colored"></i>MySQL</span>
                             <span class="skill-btn"><i class="devicon-oracle-original colored"></i><strong>Oracle</strong></span>
+                            <span class="skill-btn"><i class="devicon-mysql-plain colored"></i>MySQL</span>
+                            <span class="skill-btn"><i class="devicon-mariadb-plain colored"></i>MariaDB</span>
                             <span class="skill-btn"><i class="devicon-mongodb-plain colored"></i><strong>MongoDB</strong></span>
-                            <span class="skill-btn"><i class="devicon-dbeaver-plain colored"></i>ERD 설계</span>
+
+                            <span class="skill-btn"><strong>MyBatis</strong></span>
+                            <span class="skill-btn"><strong>JPA</strong></span>
+                            <span class="skill-btn"><strong>ERD 설계</strong></span>
                         </div>
                     </div>
 
+                    <!-- Data / Analysis -->
                     <div class="skills-category">
-                        <h4>Data / AI</h4>
+                        <h4>Data / Analysis</h4>
                         <div class="skills-list">
-                            <span class="skill-btn"><i class="devicon-python-plain colored"></i><strong>Python</strong></span>
-                            <span class="skill-btn"><i class="devicon-fastapi-plain colored"></i><strong>FastAPI</strong></span>
                             <span class="skill-btn"><i class="devicon-jupyter-plain colored"></i><strong>Jupyter</strong></span>
                             <span class="skill-btn"><i class="devicon-pandas-plain colored"></i>Pandas</span>
-                            <span class="skill-btn"><i class="devicon-numpy-plain colored"></i>Numpy</span>
+                            <span class="skill-btn"><i class="devicon-numpy-plain colored"></i>NumPy</span>
                         </div>
                     </div>
 
+                    <!-- Infra / DevOps -->
                     <div class="skills-category">
-                        <h4>Tools</h4>
+                        <h4>Infra / DevOps</h4>
+                        <div class="skills-list">
+                            <span class="skill-btn"><i class="devicon-linux-plain colored"></i><strong>Linux</strong></span>
+                            <span class="skill-btn"><i class="devicon-amazonwebservices-original colored"></i><strong>AWS</strong></span>
+                            <span class="skill-btn"><i class="devicon-docker-plain colored"></i><strong>Docker</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- IDE / Tools -->
+                    <div class="skills-category">
+                        <h4>IDE / Tools</h4>
                         <div class="skills-list">
                             <span class="skill-btn"><i class="devicon-intellij-plain colored"></i><strong>IntelliJ</strong></span>
-                            <span class="skill-btn"><i class="devicon-eclipse-plain colored"></i><strong>Eclipse</strong></span>
-                            <span class="skill-btn"><i class="devicon-vscode-plain colored"></i>VSCode</span>
-                            <span class="skill-btn"><i class="devicon-docker-plain colored"></i>Docker</span>
+                            <span class="skill-btn"><i class="devicon-eclipse-plain colored"></i>Eclipse</span>
+                            <span class="skill-btn"><i class="devicon-dbeaver-plain colored"></i><strong>DBeaver</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Version Control -->
+                    <div class="skills-category">
+                        <h4>Version Control & Collaboration</h4>
+                        <div class="skills-list">
+                            <span class="skill-btn"><i class="devicon-git-plain colored"></i><strong>Git</strong></span>
                             <span class="skill-btn"><i class="devicon-github-original colored"></i><strong>GitHub</strong></span>
+                            <span class="skill-btn"><i class="devicon-gitlab-plain colored"></i>GitLab</span>
                         </div>
                     </div>
                 </section>
@@ -186,7 +183,7 @@
                     <h3 class="section-title">Contact</h3>
                     <ul>
                         <li><i class="devicon-github-original colored"></i>
-                            <a href="https://github.com/qwertupoiy" target="_blank">GitHub · qwertupoiy</a>
+                            <a href="https://github.com/dhhhuuo" target="_blank">GitHub · dhhhuuo</a>
                         </li>
                         <li>📧
                             <a href="mailto:qwertupoiy@gmail.com">qwertupoiy@gmail.com</a>
@@ -202,5 +199,6 @@
 </main>
 
 <script src="assets/js/main.js"></script>
+<script src="assets/js/sidebar.js"></script>
 </body>
 </html>
