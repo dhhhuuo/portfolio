@@ -1,7 +1,14 @@
 /* ------------------------------
-   Sidebar (분리)
+   공통 스크롤 제어 (움직임 방지)
 ------------------------------ */
+html {
+    scrollbar-gutter: stable !important;
+    overflow-y: scroll;
+}
 
+/* ------------------------------
+   사이드바 (데스크톱 기본)
+------------------------------ */
 .sidebar {
     width: 250px;
     background: #fff;
@@ -11,7 +18,7 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
-    z-index: 10;
+    z-index: 10002;
 }
 
 .sidebar-header {
@@ -31,11 +38,6 @@
 .sidebar-menu {
     list-style: none;
     margin: 30px 0 0;
-    padding: 0;            /* ✅ reset 없이도 동일하게 */
-}
-
-.sidebar-menu li {
-    margin: 0;
     padding: 0;
 }
 
@@ -47,7 +49,6 @@
     padding: 0 5px;
 }
 
-/* 전체 링크 공통 */
 .sidebar-menu a {
     display: block;
     padding: 8px 12px;
@@ -61,26 +62,14 @@
     background: #f0f0f0;
 }
 
-/* 프로젝트 전용: 1줄 = 이름+날짜, 2줄 = 설명 */
-.sidebar-project {
-    display: block;
-}
-
 .sidebar-project-top {
     display: flex;
     align-items: baseline;
     gap: 6px;
 }
 
-.sidebar-project-name {
-    font-size: 0.95rem;
-}
-
-.sidebar-project-date {
-    font-size: 0.75rem;
-    color: #9ca3af;
-}
-
+.sidebar-project-name { font-size: 0.95rem; }
+.sidebar-project-date { font-size: 0.75rem; color: #9ca3af; }
 .sidebar-project-desc {
     display: block;
     font-size: 0.7rem;
@@ -106,76 +95,103 @@
 }
 
 /* ------------------------------
-   Layout (sidebar + content)
+   본문 컨테이너 (공통 여백)
 ------------------------------ */
-.content {
+.content, .proj-page {
     margin-left: 250px;
     flex: 1;
     padding: 38px 40px 60px;
+    min-height: 100vh;
 }
 
 /* ------------------------------
-   Mobile
+   모바일 전용 (1024px 이하)
 ------------------------------ */
 .mobile-header {
     display: none;
 }
 
 @media (max-width: 1024px) {
+    /* 본문 위치 고정 및 여백 */
     .content {
-        margin-left: 0;
-        padding: 20px;
+        padding-top: 85px !important;
     }
 
+    .proj-page {
+        margin-left: 0 !important;
+        padding-top: 70px !important;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        width: 100% !important;
+    }
+
+    /* 사이드바 숨기기 및 애니메이션 */
     .sidebar {
-        transform: translateX(-100%);
-        transition: transform 0.2s ease-out;
+        transform: translateX(-100%) !important;
+        transition: transform 0.2s ease-out !important;
+        z-index: 10002 !important;
     }
 
     .sidebar.active {
-        transform: translateX(0);
+        transform: translateX(0) !important;
     }
 
+    /* 모바일 상단 바 (박제) */
     .mobile-header {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        margin-bottom: 20px;
+        padding: 0 20px;
+        height: 60px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: #fafafa;
+        border-bottom: 1px solid #e5e7eb;
+        box-sizing: border-box;
+        transform: translateZ(0);
+        will-change: transform;
+    }
+
+    /* Portfolio 글자 우측 고정 */
+    .mobile-header h2 {
+        display: block;
+        margin: 0;
+        margin-left: auto;
+        padding: 0;
+        font-size: 1.1rem;
+        font-weight: 700;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* 사이드바 활성화 시 스크롤 차단 */
+    body.no-scroll {
+        overflow: hidden !important;
+        width: 100% !important;
     }
 }
 
 /* ------------------------------
-   Dark mode (sidebar only) - variable
+   다크모드 (공통 레이아웃)
 ------------------------------ */
-
 html.dark .sidebar {
-    background: var(--dark-sidebar);
-    border-right: 1px solid var(--dark-border);
-    color: var(--dark-text);
+    background: var(--dark-sidebar, #171717);
+    border-right: 1px solid var(--dark-border, #2f2f2f);
+    color: var(--dark-text, #e6e6e6);
 }
 
-html.dark .sidebar-title {
-    color: var(--dark-title);
+html.dark .mobile-header {
+    background: var(--dark-bg, #121212);
+    border-bottom: 1px solid var(--dark-border, #2f2f2f);
 }
 
-html.dark .sidebar-menu a {
-    color: var(--dark-text);
+html.dark .sidebar-title,
+html.dark .mobile-header h2 {
+    color: var(--dark-title, #f4f4f5);
 }
 
-html.dark .sidebar-menu a:hover {
-    background: rgba(255, 255, 255, 0.06);
-}
-
-html.dark .sidebar-label {
-    color: var(--dark-muted);
-}
-
-html.dark .sidebar-footer {
-    color: var(--dark-muted);
-}
-
-html.dark .theme-toggle {
-    background: transparent;
-    color: var(--dark-text);
-    border-color: var(--dark-border);
-}
+html.dark .sidebar-menu a { color: var(--dark-text, #e6e6e6); }
+html.dark .sidebar-menu a:hover { background: rgba(255, 255, 255, 0.06); }
+html.dark .sidebar-label, html.dark .sidebar-footer { color: var(--dark-muted, #a8a8a8); }
+html.dark .theme-toggle { background: transparent; color: var(--dark-text, #e6e6e6); border-color: var(--dark-border, #2f2f2f); }

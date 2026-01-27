@@ -8,6 +8,11 @@
   font-family: "Pretendard", sans-serif;
 }
 
+html {
+  scrollbar-gutter: stable !important;
+  overflow-y: scroll;
+}
+
 body {
   display: flex;
   min-height: 100vh;
@@ -130,9 +135,8 @@ body {
    본문 컨테이너
 ------------------------------ */
 .content {
-  margin-left: var(--sidebar-w);
-  flex: 1;
-  padding: 38px var(--page-pad-x) 60px;
+  margin-left: 0 !important;
+  padding-top: 60px !important;
 }
 
 .main-wrapper {
@@ -140,6 +144,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  overflow-x: hidden;
 }
 
 /* main-wrapper는 이제 폭을 잡지 않고 “세로 흐름”만 담당 */
@@ -418,24 +423,35 @@ body {
 .mobile-sidebar-toggle { display: none; }
 
 @media (max-width: 1024px) {
-  .mobile-header{
+  .mobile-header {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    padding: 14px 16px;
-    padding-left: 68px;
-    padding-rignt: 16px;
-    position: sticky;
+    padding: 0 20px;
+    height: 60px;
+    position: fixed;
     top: 0;
-    z-index: 1;
-    width: 100vw !important;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background: #fafafa;
+    border-bottom: 1px solid #e5e7eb;
+    box-sizing: border-box;
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  .mobile-header h2 {
+    margin: 0;
+    margin-left: auto;
+    padding: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    -webkit-font-smoothing: antialiased;
   }
 
   .mobile-sidebar-toggle {
     position: fixed;
-    top: 12px;
+    top: 8px;
     left: 12px;
     width: 44px;
     height: 44px;
@@ -453,31 +469,37 @@ body {
     transition: left 0.2s ease;
   }
 
-  /* ✅ 다크모드 */
-  html.dark .mobile-sidebar-toggle{
+  .content {
+    margin-left: 0 !important;
+    padding-top: 85px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  html.dark .mobile-header {
+    background: var(--dark-bg);
+    border-bottom: 1px solid var(--dark-border);
+  }
+
+  html.dark .mobile-sidebar-toggle {
     background: rgba(20,20,20,0.6);
     color: #fff;
     border: 1px solid rgba(255,255,255,0.14);
-    box-shadow: 0 10px 22px rgba(0,0,0,0.45);
   }
 
-  /* ✅ 열리면 버튼만 옆으로(사이드바 밖으로) */
   body.menu-open .mobile-sidebar-toggle {
     left: 262px;
   }
 
   .sidebar {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 250px;                /* 필요 시 조정 */
-    transform: translateX(-100%);
-    transition: transform 0.2s ease-out;
-    z-index: 10002;              /* overlay보다 위 */
+    z-index: 10002 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.2s ease-out !important;
   }
 
-  /* ✅ 사이드바 “열림”은 transform으로만 */
   .sidebar.active,
   #sidebar.active .sidebar {
     transform: translateX(0) !important;
@@ -487,14 +509,18 @@ body {
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.2s ease;
-    z-index: 10001;
+    z-index: 10001 !important;
   }
   .sidebar-overlay.active{
     pointer-events: auto;
     opacity: 1;
   }
 
-  body.no-scroll { overflow: hidden; }
+  body.no-scroll {
+    overflow: hidden !important;
+    width: 100% !important;
+    position: relative !important;
+  }
 }
 
 /* ==============================
