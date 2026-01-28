@@ -1,11 +1,12 @@
 /* 프로젝트 상세 페이지 공통 */
 .proj-page {
+  padding: 0;
+  max-width: var(--page-max);
+  width: 100%;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 18px;
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
 }
 
 /* HERO */
@@ -449,11 +450,13 @@
 /* 반응형 */
 @media (max-width: 1024px) {
   .proj-page {
-    max-width: 100%;
-    margin: 0;
+    margin-left: 0 !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 
   .proj-page .proj-hero {
+    margin-top: 5px;
     flex-direction: column;
     align-items: flex-start;
   }
